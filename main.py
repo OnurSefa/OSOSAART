@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import clip
 from matplotlib.image import imread
+from PIL import Image
 
 device = "cuda" if torch.cuda.is_available() else 'cpu'
 
@@ -35,8 +36,16 @@ def create_model(given_words, l_rate=0.003, e=200):
 
 
 if __name__ == '__main__':
+
+    model, preprocess = clip.load("ViT-B/32", device=device)
+
+    cat = preprocess(Image.open('ele.jpg')).unsqueeze(0).to(device)
+    cat_text = clip.tokenize(['an elephant', 'a dog', 'a cat', 'a tree', 'a monkey', 'soul', 'pencil']).to(device)
+    a = model(cat, cat_text)
+
     random_image = np.random.randint(0, 256, (64, 64, 3))
     show_image(random_image)
+
 
 
 
