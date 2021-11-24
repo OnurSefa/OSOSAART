@@ -4,3 +4,5 @@ __pycache__
 *.vec
 *.zip
 *.jpg
+*.csv
+dataset.txt
