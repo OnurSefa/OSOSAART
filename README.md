@@ -1,6 +1,9 @@
 # OSOSAART
 
 ---
+<div align='center'>
+  <img src="https://user-images.githubusercontent.com/12373950/143661514-262583b2-b387-446c-8a42-136fd5112290.PNG" width="500">
+</div>
 
 ### Description
 
