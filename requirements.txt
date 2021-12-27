@@ -1,4 +1,0 @@
-matplotlib~=3.5.0
-numpy~=1.21.4
-clip~=1.0
-pillow~=8.4.0
