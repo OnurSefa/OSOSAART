@@ -1,0 +1,25 @@
+conda create env --name vqgan python=3.6
+
+git clone https://github.com/openai/CLIP
+git clone https://github.com/CompVis/taming-transformers
+pip install transformers
+pip install ftfy regex tqdm omegaconf pytorch-lightning
+pip install kornia
+pip install einops
+pip install wget
+pip install stegano
+sudo apt install exempi
+pip install python-xmp-toolkit
+pip install imgtag
+pip install pillow==7.1.2
+pip install imageio-ffmpeg
+mkdir steps
+sudo apt install curl
+curl -L -o vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1' #ImageNet 16384
+curl -L -o vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1' #ImageNet 16384
+
+
+pip install ipython
+pip install taming-transformers
+pip install imageio
+
