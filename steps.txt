@@ -1,0 +1,17 @@
+// base python version
+python=3.6
+
+// requirements
+pip install ftfy regex requests tqdm
+git clone --recursive https://github.com/crowsonkb/v-diffusion-pytorch
+
+// download the diffusion model
+mkdir v-diffusion-pytorch/checkpoints
+curl -L https://v-diffusion.s3.us-west-2.amazonaws.com/cc12m_1_cfg.pth > v-diffusion-pytorch/checkpoints/cc12m_1_cfg.pth
+// bu terminal line commandi calistirmak istemiyosak ilk linkten dosyayi indirik isaretli pathe koyulabilir
+
+// kodun icerisindeki importlara dair yuklemeler
+pip install ipython
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+pip install clip-by-openai
+pip install cPython
