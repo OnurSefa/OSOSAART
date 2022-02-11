@@ -18,7 +18,7 @@ class Ososa(nn.Module):
         self.pool2 = nn.MaxPool2d((3, 3))
         self.pool3 = nn.MaxPool2d((5, 5))
         self.linear1 = nn.Linear(2 * 5 * 5, 10)
-        self.linear2 = nn.Linear(10, 2)
+        self.linear2 = nn.Linear(10, 5)
 
 
     def forward(self, x):
@@ -38,11 +38,6 @@ class Ososa(nn.Module):
         x = self.relu(x)
         return x
 
-
-def loss_function(p, y):
-    cluster_model = MiniBatchKMeans(n_clusters=5)
-    y_hat = cluster_model.fit_predict(p)
-    print("a")
 
 
 def train(x, y, epoch=200, learning_rate=0.005):
