@@ -7,6 +7,7 @@ import handler
 import torch.nn as nn
 from sklearn.cluster import MiniBatchKMeans
 
+
 class Ososa(nn.Module):
     def __init__(self):
         super(Ososa, self).__init__()
@@ -18,8 +19,7 @@ class Ososa(nn.Module):
         self.pool2 = nn.MaxPool2d((3, 3))
         self.pool3 = nn.MaxPool2d((5, 5))
         self.linear1 = nn.Linear(2 * 5 * 5, 10)
-        self.linear2 = nn.Linear(10, 5)
-
+        self.linear2 = nn.Linear(10, 2)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -37,7 +37,6 @@ class Ososa(nn.Module):
         x = self.linear2(x)
         x = self.relu(x)
         return x
-
 
 
 def train(x, y, epoch=200, learning_rate=0.005):
