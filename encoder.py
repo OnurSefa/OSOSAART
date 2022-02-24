@@ -1,12 +1,9 @@
 
-import io
-import numpy as np
 import torch
-from torch.utils.data import TensorDataset, DataLoader
 import handler
 import torch.nn as nn
-from sklearn.cluster import MiniBatchKMeans
 import loss_function
+
 
 class Ososa(nn.Module):
     def __init__(self):
@@ -18,7 +15,7 @@ class Ososa(nn.Module):
         self.pool1 = nn.MaxPool2d((3, 3))
         self.pool2 = nn.MaxPool2d((3, 3))
         self.pool3 = nn.MaxPool2d((5, 5))
-        self.linear1 = nn.Linear(2 * 5 * 5, 10)
+        self.linear1 = nn.Linear(2 * 5 * 5, 5)
         self.linear2 = nn.Linear(10, 2)
 
     def forward(self, x):
@@ -33,9 +30,9 @@ class Ososa(nn.Module):
         x = self.pool3(x)
         x = torch.flatten(x, 1)
         x = self.linear1(x)
-        x = self.relu(x)
-        x = self.linear2(x)
-        x = self.relu(x)
+        # x = self.relu(x)
+        # x = self.linear2(x)
+        # x = self.relu(x)
         return x
 
 
@@ -44,26 +41,21 @@ def train(x, y, epoch=200, learning_rate=0.005):
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     # loss_f = loss_function
     # loss_fn = nn.CrossEntropyLoss()
-    values = torch.tensor([[0, 1], [0, 1], [0, 1], [0, 1], [-1, 0], [-1, 0], [-1, 0]]).float()
-    x = x[0:7, :, :, :]
     y = y.long()
     # loss_f = loss_function.OsosaLoss(y, number_of_centroids=5)
-    loss_f = nn.MSELoss()
-    y_hat = loss_function.OsosaLoss.find_points(5, y, 1).float()
-    y_hat.requires_grad = False
-    
-
+    loss_f = nn.CrossEntropyLoss()
     # TODO batch halinde alabiliriz daha cok data kullandigimizda
     for e in range(epoch):
         optimizer.zero_grad()
         prediction = model(x)
-        loss = loss_f(prediction, values)
+        loss = loss_f(prediction, y)
         loss.backward()
         optimizer.step()
 
         if e % 10 == 0:
             print("Loss in e={} is {}".format(e, loss))
-           #  loss_f.show(prediction, y)
+            #  loss_f.show(prediction, y)
+    print('finished')
 
 
 if __name__ == '__main__':
