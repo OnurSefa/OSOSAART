@@ -6,7 +6,7 @@ from torch.utils.data import TensorDataset, DataLoader
 import handler
 import torch.nn as nn
 from sklearn.cluster import MiniBatchKMeans
-
+import loss_function
 
 class Ososa(nn.Module):
     def __init__(self):
@@ -42,9 +42,12 @@ class Ososa(nn.Module):
 def train(x, y, epoch=200, learning_rate=0.005):
     model = Ososa()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    loss_f = loss_function
-    loss_fn = nn.CrossEntropyLoss()
+    # loss_f = loss_function
+    # loss_fn = nn.CrossEntropyLoss()
+    loss_f = loss_function.OsosaLoss(number_of_centroids=5)
+
     y = y.long()
+    # y = y * 0
 
     # TODO batch halinde alabiliriz daha cok data kullandigimizda
     for e in range(epoch):
@@ -57,7 +60,8 @@ def train(x, y, epoch=200, learning_rate=0.005):
 
         if e % 10 == 0:
             print("Loss in e={} is {}".format(e, loss))
-        
+            loss_f.show(prediction, y)
+
 
 if __name__ == '__main__':
     data, labels = handler.take_data()
