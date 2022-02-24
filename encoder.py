@@ -44,23 +44,26 @@ def train(x, y, epoch=200, learning_rate=0.005):
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     # loss_f = loss_function
     # loss_fn = nn.CrossEntropyLoss()
-    loss_f = loss_function.OsosaLoss(number_of_centroids=5)
-
+    values = torch.tensor([[0, 1], [0, 1], [0, 1], [0, 1], [-1, 0], [-1, 0], [-1, 0]]).float()
+    x = x[0:7, :, :, :]
     y = y.long()
-    # y = y * 0
+    # loss_f = loss_function.OsosaLoss(y, number_of_centroids=5)
+    loss_f = nn.MSELoss()
+    y_hat = loss_function.OsosaLoss.find_points(5, y, 1).float()
+    y_hat.requires_grad = False
+    
 
     # TODO batch halinde alabiliriz daha cok data kullandigimizda
     for e in range(epoch):
-        prediction = model(x)
-        loss = loss_f(prediction, y)
-
         optimizer.zero_grad()
+        prediction = model(x)
+        loss = loss_f(prediction, values)
         loss.backward()
         optimizer.step()
 
         if e % 10 == 0:
             print("Loss in e={} is {}".format(e, loss))
-            loss_f.show(prediction, y)
+           #  loss_f.show(prediction, y)
 
 
 if __name__ == '__main__':

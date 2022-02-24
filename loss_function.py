@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 import math
+from torch import nn
 
 
 class OsosaLoss(nn.Module):
@@ -12,12 +13,18 @@ class OsosaLoss(nn.Module):
         self.centers = self.find_points(number_of_centroids, y_hat, radius)
 
     def forward(self, x):
-        distances = torch.cdist(x.float(), self.centers.float(), p=2)
-        total_distance = torch.sum(distances)
-        avg_distance = torch.div(total_distance, self.centers.shape[0])
-        return avg_distance
+        # distances = torch.cdist(x.float(), self.centers.float(), p=2)
+        # difference = x.float() - self.centers.float()
+        # squared_differences = torch.mul(difference, difference)
+        # total_squared_differences = torch.sum(squared_differences, dim=1)
+        # distances = torch.sqrt(total_squared_differences)
+        # total_distance = torch.sum(distances)
+        # avg_distance = torch.div(total_distance, self.centers.shape[0])
+        loss = nn.MSELoss(reduction='mean')
+        return loss(x, self.centers.float())
 
-    def find_points(self, center_count, y_hat, radius=1):
+    @staticmethod
+    def find_points(center_count, y_hat, radius=1):
         points = []
         degree_increment = 2 * math.pi / center_count
         cos_degree = math.pi / 2
