@@ -7,22 +7,17 @@ import math
 
 
 class OsosaLoss(nn.Module):
-    def __init__(self, number_of_centroids=5, radius=1):
+    def __init__(self, y_hat, number_of_centroids=5, radius=1):
         super(OsosaLoss, self).__init__()
-        self.centers = self.find_points(number_of_centroids, radius)
+        self.centers = self.find_points(number_of_centroids, y_hat, radius)
 
-    def forward(self, x, y):
-        y_hat = np.zeros((y.shape[0], self.centers.size(dim=0)))
-        indices = np.arange(y.shape[0])
-        y_hat[indices, y[indices]] = 1
-        y_hat = torch.tensor(y_hat, requires_grad=False).long()
+    def forward(self, x):
         distances = torch.cdist(x.float(), self.centers.float(), p=2)
-        related = torch.mul(y_hat, distances)
-        total_distance = torch.sum(related)
-        avg_distance = torch.div(total_distance, y.shape[0])
+        total_distance = torch.sum(distances)
+        avg_distance = torch.div(total_distance, self.centers.shape[0])
         return avg_distance
 
-    def find_points(self, center_count, radius=1):
+    def find_points(self, center_count, y_hat, radius=1):
         points = []
         degree_increment = 2 * math.pi / center_count
         cos_degree = math.pi / 2
@@ -36,8 +31,13 @@ class OsosaLoss(nn.Module):
             sin_degree += degree_increment
 
         points = np.array(points)
-        points = torch.tensor(points, requires_grad=False)
-        return points
+        correct_points = []
+        for y in y_hat:
+            current_correct_point = points[int(y)]
+            correct_points.append(current_correct_point)
+
+        correct_points = torch.tensor(correct_points, requires_grad=False)
+        return correct_points
 
     def show(self, x, y):
         x_data = x.clone().detach().numpy()
