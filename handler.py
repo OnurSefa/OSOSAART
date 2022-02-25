@@ -37,7 +37,7 @@ def image_to_numpy(input_directory="./output", output_directory="./numpy_images"
 				print(image_name)
 
 
-def take_data(input_directory_1="./numpy_images", input_directory_2="./labels"):
+def take_data(input_directory_1="./numpy_images", input_directory_2="./labels", limit=10000):
 	directory_list = os.listdir(input_directory_1)
 	data = []
 	labels = []
@@ -49,9 +49,12 @@ def take_data(input_directory_1="./numpy_images", input_directory_2="./labels"):
 			data.append(datum)
 			labels.append(label)
 		except ValueError:
-			print('valueError')
+			# print('valueError')
+			pass
 		if i % 100 == 0:
 			print(i)
+		if i == limit:
+			break
 	return np.array(data), np.array(labels)
 
 
